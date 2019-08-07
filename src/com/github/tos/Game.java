@@ -1,5 +1,6 @@
 package com.github.tos;
 
+import com.github.tos.Processing.Processing;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 public class Game {
 
     ArrayList<Button> buttonList = new ArrayList<>();
+    public static boolean courseSelection;
+    //contains information about who walks: user or Processing
 
     private void layoutPieces() {
         buttonList.add(new Button());
@@ -36,6 +39,7 @@ public class Game {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
 
+        Controller.window=window;
 
         GridPane root = new GridPane();
 
@@ -72,27 +76,19 @@ public class Game {
             }
         }
 
-        /*for (int i=0; i<9; i++) {
-            int finalI = i;
-            buttonList.get(i).setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    Controller controller = new Controller(simbol);
-                    controller.initialize(buttonList.get(finalI), finalI);
-                }
-            });
-        }*/
+        if (!courseSelection) {
+            Processing.searchInMemory(window, buttonList);
+        }
+
         for (int i=0; i<9; i++) {
             int finalI = i;
-            buttonList.get(i).setOnAction(event -> Controller.initialize(buttonList.get(finalI), finalI));
+            buttonList.get(i).setOnAction(event -> Controller.initialize(finalI, buttonList));
         }
 
         close.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Controller.firstsimbol=true;
-                Controller.board.clear();
-                massv();
                 window.close();
             }
         });
@@ -104,11 +100,8 @@ public class Game {
         window.setTitle("Play");
         window.show();
     }
-    void massv() {
-        for (int i=0; i<9; i++) {
-            LogicsGame.checkBoard[i]=i+3;
-        }
-    }
+
+
 
 
 

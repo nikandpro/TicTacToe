@@ -1,5 +1,6 @@
 package com.github.tos;
 
+import com.github.tos.Processing.Memory;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -40,16 +41,24 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 Game game = new Game();
-                game.modalGame();
+                Game.courseSelection=true;
                 Controller.firstsimbol=true;
+                Memory.rewriting.clear();
+                Memory.win=false;
+                Memory.numberMove=0;
+                game.modalGame();
             }
         });
         cross.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Game game = new Game();
-                game.modalGame();
+                Game.courseSelection=false;
                 Controller.firstsimbol=true;
+                Memory.rewriting.clear();
+                Memory.win=false;
+                Memory.numberMove=0;
+                game.modalGame();
             }
         });
 

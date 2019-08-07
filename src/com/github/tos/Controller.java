@@ -1,19 +1,36 @@
 package com.github.tos;
 
+import com.github.tos.Processing.Memory;
+import com.github.tos.Processing.Processing;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 
 
 public class Controller  {
 
-    static boolean firstsimbol=true;
-    static ArrayList board = new ArrayList();
+    static Stage window;
+
+    public static boolean firstsimbol;
 
 
-    public static void initialize(Button button, int numberButton) {
+    public static void initialize(int numberButton, ArrayList<Button> buttonList) {
+
+        insertImage(numberButton, buttonList);
+
+        PermanentCheckWin.checkOnWin(numberButton, window, true);
+
+        if (Memory.numberMove<8 && Game.courseSelection && Memory.win==false) {
+            Processing.searchInMemory(window, buttonList);
+        }
+
+    }
+
+    public static void insertImage( int numberButton, ArrayList<Button> buttonList) {
         InputStream input = Controller.class.getResourceAsStream("/com/github/tos/icon/i2.png");
         Image image = new Image(input);
         ImageView imageView = new ImageView(image);
@@ -22,19 +39,9 @@ public class Controller  {
         Image image2 = new Image(input2);
         ImageView imageView2 = new ImageView(image2);
 
-        if (firstsimbol) LogicsGame.checkBoard[numberButton]=1;
-        else  LogicsGame.checkBoard[numberButton]=2;
-
-        if (!board.contains(numberButton)) {
-            if (firstsimbol) {
-                button.setGraphic(imageView);
-            } else button.setGraphic(imageView2);
-            firstsimbol = !firstsimbol;
-            board.add(numberButton);
-        }
-
-        LogicsGame.checkWin();
-
+        if (firstsimbol) {
+            buttonList.get(numberButton).setGraphic(imageView);
+        } else buttonList.get(numberButton).setGraphic(imageView2);
+        firstsimbol = !firstsimbol;
     }
-
 }
